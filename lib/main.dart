@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'vision.dart';
 import 'emergency.dart';
-import 'Maps.dart';
+import 'maps.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 
 void main() {
-  Gemini.init(apiKey: "Insert key here.");
+  Gemini.init(apiKey: "Insert API Key here.");
   runApp(const MyApp());
 }
 
