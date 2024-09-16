@@ -1,75 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'dart:async';
+import 'package:telephony/telephony.dart';
+import 'dart:math'; // Import the math library for sqrt()
 
-class EPage extends StatefulWidget {
-  const EPage({super.key});
-
+class EmergencyPage extends StatefulWidget {
   @override
-  State<EPage> createState() => _EmergencyState();
+  _EmergencyPageState createState() => _EmergencyPageState();
 }
 
-class _EmergencyState extends State<EPage> {
+class _EmergencyPageState extends State<EmergencyPage> {
+  final Telephony telephony = Telephony.instance;
+  bool hasFallen = false;
+  bool smsPermissionGranted = false;
+  late StreamSubscription<AccelerometerEvent> _streamSubscription;
+
   @override
   void initState() {
     super.initState();
-    requestPermissions();
+    checkPermissions();
+    startFallDetection();
   }
 
-  Future<void> requestPermissions() async {
-    await Permission.sms.request();
-    await Permission.location.request();
+  @override
+  void dispose() {
+    _streamSubscription.cancel();
+    super.dispose();
   }
 
-  void sendSOS(String message, String receipent) async {
-    // SmsMessage messageEvent = new SmsMessage(receipent, message);
-    // messageEvent.onStateChanged.listen((state) {
-    //   if (state == SmsMessageState.Sent) {
-    //     print("SMS is sent!");
-    //   } else if (state == SmsMessageState.Delivered) {
-    //     print("SMS is delivered!");
-    //   }
-    // });
-  }
-  Future<void> shareLocation() async {
-    await Firebase.initializeApp();
-    DatabaseReference databaseReference = FirebaseDatabase.instance.ref().child('locations').child('user1');
-
-    Position position = await Geolocator.getCurrentPosition();
-    databaseReference.set({
-      'latitude': position.latitude,
-      'longitude': position.longitude,
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
+  Future<void> checkPermissions() async {
+    bool? permissionGranted = await telephony.requestPhoneAndSmsPermissions;
+    setState(() {
+      smsPermissionGranted = permissionGranted ?? false; // Handle null case
     });
+  }
 
-    String mapLink = 'https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}';
-    String emergencyContact= '9869083012';
-    String sosMessage = 'I need help. Please contact me immediately. My location: $mapLink';
+  void startFallDetection() {
+    _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
+      double acceleration = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
+      if (acceleration > 15) {
+        setState(() {
+          hasFallen = true;
+        });
+        sendSmsAlert();
+      }
+    });
+  }
 
-    sendSOS(sosMessage, emergencyContact);
+  void sendSmsAlert() {
+    if (smsPermissionGranted) {
+      telephony.sendSms(
+        to: "9869083012", // Replace with the actual emergency contact number
+        message: "Fall detected! Please check on me immediately.",
+      );
+    } else {
+      print('SMS permission not granted');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Emergency Settings'),
-        centerTitle: true,
+        title: const Text('Emergency'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                shareLocation();
-              },
-              child: const Text('Send SOS and Share Location'),
-            ),
-          ],
-        ),
+        child: hasFallen
+            ? const Text('Fall detected! Sending alert...',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
+            : const Text('Monitoring for fall...', style: TextStyle(fontSize: 24)),
       ),
     );
   }

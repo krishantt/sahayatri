@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => HomePage(),
         '/camera_page': (context) => const CameraScreen(),
-        '/emergency_page': (context) => const EPage(),
+        '/emergency_page': (context) => EmergencyPage(), // Updated route for emergency page
         '/map_page': (context) => const MapPage(),
       },
     );
