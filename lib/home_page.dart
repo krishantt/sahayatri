@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-
-
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   final flutterTts = FlutterTts();
@@ -19,14 +17,15 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sahayatri'),
         centerTitle: true,
-        backgroundColor: Color(0xff454b7e),
+        backgroundColor: const Color(0xff454b7e),
       ),
       drawer: NavigationDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/blindaid_logo.png', width: 150, height: 150),
+            Image.asset('assets/images/blindaid_logo.png',
+                width: 150, height: 150),
             const SizedBox(height: 30),
             const Text(
               'Welcome to Sahayatri',
@@ -45,9 +44,9 @@ class HomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/camera_page');
               },
               style: ElevatedButton.styleFrom(
-                iconColor: Color(0xff454b7e),
+                iconColor: const Color(0xff454b7e),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 textStyle: const TextStyle(fontSize: 18),
               ),
               child: const Text('Vision Assistance'),
@@ -62,6 +61,8 @@ class HomePage extends StatelessWidget {
 class NavigationDrawer extends StatelessWidget {
   final flutterTts = FlutterTts();
 
+  NavigationDrawer({super.key});
+
   Future<void> _speak(String text) async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1.0);
@@ -74,13 +75,13 @@ class NavigationDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Color(0xff454b7e),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
                   'Sahayatri',
                   style: TextStyle(

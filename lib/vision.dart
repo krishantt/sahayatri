@@ -7,6 +7,8 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class CameraScreen extends StatefulWidget {
+  const CameraScreen({super.key});
+
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -37,7 +39,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
      _analyze();
     });
   }
@@ -110,7 +112,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Camera'),
+        title: const Text('Camera'),
       ),
       body: Column(
         children: [
@@ -122,10 +124,10 @@ class _CameraScreenState extends State<CameraScreen> {
               ),
             )
           else
-            Expanded(
+            const Expanded(
               child: Center(child: CircularProgressIndicator()),
             ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(data),
         ],
       ),
