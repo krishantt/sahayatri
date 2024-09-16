@@ -15,17 +15,20 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sahayatri'),
+        title: const Text('Sahayatri',
+        style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: const Color(0xff454b7e),
+      
       ),
       drawer: NavigationDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('images/blindaid_logo.png',
-                width: 150, height: 150),
+            Image.asset('images/blindaid_logo.png'),
+                // width: 150, height: 150),
             const SizedBox(height: 30),
             const Text(
               'Welcome to Sahayatri',
