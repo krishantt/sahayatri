@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('images/blindaid_logo.png',
+            Image.asset('assets/images/blindaid_logo.png',
                 width: 150, height: 150),
             const SizedBox(height: 30),
             const Text(

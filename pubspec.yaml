@@ -22,6 +22,7 @@ environment:
   sdk: ^3.5.3
 
 assets:
+  -.env
   -assets/images
 
 dependencies:
@@ -38,6 +39,9 @@ dependencies:
   firebase_core: ^3.4.1
   firebase_database: ^11.1.2
   flutter_launcher_icons: "^0.13.1"
+
+  flutter_dotenv: ^5.1.0
+
   latlong2: ^0.9.1
   flutter_map_cancellable_tile_provider: ^3.0.2
   url_launcher: ^6.1.10
