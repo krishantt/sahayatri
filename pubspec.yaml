@@ -46,6 +46,7 @@ dependencies:
   latlong2: ^0.9.1
   flutter_map_cancellable_tile_provider: ^3.0.2
   url_launcher: ^6.1.10
+  toastification: ^2.2.0
 dependency_overrides:
     http: ^1.2.1
 
