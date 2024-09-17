@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:telephony/telephony.dart';
 import 'package:toastification/toastification.dart'; // SMS sending package
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FallDetection {
   final Telephony telephony = Telephony.instance;
@@ -11,6 +12,16 @@ class FallDetection {
   bool smsPermissionGranted = false;
   bool cooldownActive = false;
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
+  String phoneNumber = '';
+
+  Future<void> _checkStoredPhoneNumber() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? storedPhoneNumber = prefs.getString('phoneNumber');
+
+    if (storedPhoneNumber != null) {
+        phoneNumber = storedPhoneNumber;
+    }
+  }
 
   void startMonitoring() async {
     await checkPermissions();
@@ -52,10 +63,11 @@ class FallDetection {
     });
   }
 
-  void sendSmsAlert() {
+  void sendSmsAlert() async {
+    await _checkStoredPhoneNumber();
     if (smsPermissionGranted) {
       telephony.sendSms(
-        to: "9869083012", // Replace with the actual emergency contact number
+        to: phoneNumber, // Replace with the actual emergency contact number
         message: "Fall detected! Please check on me immediately.",
       );
     } else {
