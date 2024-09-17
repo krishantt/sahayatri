@@ -21,6 +21,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   FallDetection fall = FallDetection();
+  String? phoneNumber;
+
   @override
   void initState() {
     super.initState();
@@ -28,11 +30,7 @@ class _MyAppState extends State<MyApp> {
     fall.startMonitoring();
   }
 
-  @override
-  void dispose() {
-    // Stop fall detection monitoring when the app is disposed
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +41,11 @@ class _MyAppState extends State<MyApp> {
           primaryColor: const Color(0xff454b7e),
           scaffoldBackgroundColor: const Color(0xffb8bddd),
           textTheme: const TextTheme(
-            bodyLarge: TextStyle(
-                color: Colors.black87), // Use 'bodyLarge' instead of 'bodyText1'
+            bodyLarge: TextStyle(color: Colors.black87),
+            // Use 'bodyLarge' instead of 'bodyText1'
             bodyMedium: TextStyle(
-                color: Colors.black54), // Use 'bodyMedium' instead of 'bodyText2'
+                color:
+                    Colors.black54), // Use 'bodyMedium' instead of 'bodyText2'
           ),
         ),
         home: HomePage(),

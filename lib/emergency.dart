@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:async';
-import 'package:telephony/telephony.dart';
-import 'dart:math'; // Import the math library for sqrt()
+import 'package:shared_preferences/shared_preferences.dart';
+import 'ui/model_sheet.dart';
 
 class EmergencyPage extends StatefulWidget {
   @override
@@ -10,65 +9,65 @@ class EmergencyPage extends StatefulWidget {
 }
 
 class _EmergencyPageState extends State<EmergencyPage> {
-  final Telephony telephony = Telephony.instance;
-  bool hasFallen = false;
-  bool smsPermissionGranted = false;
-  late StreamSubscription<AccelerometerEvent> _streamSubscription;
+  String phoneNumber = '';
+
+  Future<void> _checkStoredPhoneNumber() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? storedPhoneNumber = prefs.getString('phoneNumber');
+
+    if (storedPhoneNumber != null) {
+      setState(() {
+        phoneNumber = storedPhoneNumber;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    checkPermissions();
-    startFallDetection();
-  }
-
-  @override
-  void dispose() {
-    _streamSubscription.cancel();
-    super.dispose();
-  }
-
-  Future<void> checkPermissions() async {
-    bool? permissionGranted = await telephony.requestPhoneAndSmsPermissions;
-    setState(() {
-      smsPermissionGranted = permissionGranted ?? false; // Handle null case
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkStoredPhoneNumber();
     });
-  }
-
-  void startFallDetection() {
-    _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
-      double acceleration = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
-      if (acceleration > 15) {
-        setState(() {
-          hasFallen = true;
-        });
-        sendSmsAlert();
-      }
-    });
-  }
-
-  void sendSmsAlert() {
-    if (smsPermissionGranted) {
-      telephony.sendSms(
-        to: "9869083012", // Replace with the actual emergency contact number
-        message: "Fall detected! Please check on me immediately.",
-      );
-    } else {
-      print('SMS permission not granted');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Emergency'),
+        title: const Text('Emergency Settings'),
       ),
       body: Center(
-        child: hasFallen
-            ? const Text('Fall detected! Sending alert...',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
-            : const Text('Monitoring for fall...', style: TextStyle(fontSize: 24)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Stored Emergency Contact:'),
+            SizedBox(height: 16),
+            Text(
+              phoneNumber,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 50,
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await showModalBottomSheet(
+                  context: context,
+                  isDismissible: false,
+                  enableDrag: false,
+                  builder: (context) {
+                    return ModelUI();
+                  },
+                );
+                _checkStoredPhoneNumber();
+              },
+              child: Text('Change'),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:sahayatri_app/ui/model_sheet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final flutterTts = FlutterTts();
+
+  String? phoneNumber;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkStoredPhoneNumber();
+    });
+  }
 
   Future<void> _speak(String text) async {
     await flutterTts.setLanguage("en-US");
@@ -11,50 +29,81 @@ class HomePage extends StatelessWidget {
     await flutterTts.speak(text);
   }
 
+  Future<void> _checkStoredPhoneNumber() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? storedPhoneNumber = prefs.getString('phoneNumber');
+
+    if (storedPhoneNumber == null) {
+      _showPhoneNumberModal();
+    }
+  }
+
+  void _showPhoneNumberModal() {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (context) {
+        return ModelUI();
+      },
+    );
+  }
+
+  Future<void> _storePhoneNumber(String number) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('phoneNumber', number);
+    setState(() {
+      phoneNumber = number;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sahayatri',
-        style: TextStyle(color: Colors.white),
+        title: const Text(
+          'Sahayatri',
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xff454b7e),
-      
       ),
       drawer: NavigationDrawer(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/blindaid_logo.png',
-                width: 150, height: 150),
-            const SizedBox(height: 30),
-            const Text(
-              'Welcome to Sahayatri',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Your companion for vision assistance, navigation, and emergencies.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                _speak("Vision Assistance");
-                Navigator.pushNamed(context, '/camera_page');
-              },
-              style: ElevatedButton.styleFrom(
-                iconColor: const Color(0xff454b7e),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                textStyle: const TextStyle(fontSize: 18),
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/blindaid_logo.png',
+                  width: 150, height: 150),
+              const SizedBox(height: 30),
+              const Text(
+                'Welcome to Sahayatri',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              child: const Text('Vision Assistance'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              const Text(
+                'Your companion for vision assistance, navigation, and emergencies.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  _speak("Vision Assistance");
+                  Navigator.pushNamed(context, '/camera_page');
+                },
+                style: ElevatedButton.styleFrom(
+                  iconColor: const Color(0xff454b7e),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  textStyle: const TextStyle(fontSize: 18),
+                ),
+                child: const Text('Vision Assistance'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -113,7 +162,7 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.local_hospital),
-            title: const Text('Emergency'),
+            title: const Text('Emergency Settings'),
             onTap: () {
               _speak("Emergency Settings");
               Navigator.pushNamed(context, '/emergency_page');
