@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
           '/camera_page': (context) => const CameraScreen(),
           '/emergency_page': (context) =>
               EmergencyPage(), // Updated route for emergency page
-          '/map_page': (context) => MapScreen(),
+          '/map_page': (context) => MapPage(),
         },
       ),
     );
