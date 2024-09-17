@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "264387494164",
+    "project_id": "mobile-project-aaac6",
+    "storage_bucket": "mobile-project-aaac6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264387494164:android:7b5e8056bc59480e8a8201",
+        "android_client_info": {
+          "package_name": "com.example.sahayatri_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcG7T4H70mpae8RiPKmdtsE6dyWwo9WjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

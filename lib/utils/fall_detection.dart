@@ -38,7 +38,7 @@ class FallDetection {
           ),
           showProgressBar: true,
         );
-        sendSmsAlert();
+        // sendSmsAlert();
         startCooldown();
       }
     });
