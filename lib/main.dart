@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sahayatri_app/map_screen.dart';
-import 'package:sahayatri_app/utils/fall_detection.dart';
+import 'utils/fall_detection.dart';
 import 'home_page.dart';
 import 'vision.dart';
 import 'emergency.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:toastification/toastification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'utils/firebase_options.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,16 +31,13 @@ class _MyAppState extends State<MyApp> {
   MapHandler maps = MapHandler();
   String? phoneNumber;
 
-
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     // Start fall detection monitoring when the app starts
     fall.startMonitoring();
     maps.init();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +55,13 @@ class _MyAppState extends State<MyApp> {
                     Colors.black54), // Use 'bodyMedium' instead of 'bodyText2'
           ),
         ),
-        home: HomePage(),
+        home: const HomePage(),
         routes: {
-          '/home': (context) => HomePage(),
+          '/home': (context) => const HomePage(),
           '/camera_page': (context) => const CameraScreen(),
           '/emergency_page': (context) =>
-              EmergencyPage(), // Updated route for emergency page
-          '/map_page': (context) => MapScreen(),
+              const EmergencyPage(), // Updated route for emergency page
+          '/map_page': (context) => const MapPage(),
         },
       ),
     );

@@ -4,7 +4,7 @@ import 'package:sahayatri_app/ui/model_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -47,14 +47,6 @@ class _HomePageState extends State<HomePage> {
         return ModelUI();
       },
     );
-  }
-
-  Future<void> _storePhoneNumber(String number) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('phoneNumber', number);
-    setState(() {
-      phoneNumber = number;
-    });
   }
 
   @override

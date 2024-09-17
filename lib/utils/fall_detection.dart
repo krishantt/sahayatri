@@ -46,7 +46,7 @@ class FallDetection {
 
   void startCooldown() {
     cooldownActive = true;
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 5), () {
       cooldownActive = false; // Reset cooldown after 30 seconds
       hasFallen = false; // Reset fall status after cooldown
     });

@@ -3,12 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ModelUI extends StatelessWidget {
   ModelUI({super.key});
+
   String inputPhoneNumber = '';
 
   Future<void> _storePhoneNumber(String number) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('phoneNumber', number);
-
   }
 
   @override
@@ -25,11 +25,11 @@ class ModelUI extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Set phone number for emergency contact',
                 style: TextStyle(fontSize: 18),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               TextField(
@@ -37,11 +37,11 @@ class ModelUI extends StatelessWidget {
                 onChanged: (value) {
                   inputPhoneNumber = value;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Phone Number',
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   if (inputPhoneNumber.isNotEmpty) {
@@ -50,7 +50,7 @@ class ModelUI extends StatelessWidget {
                     Navigator.pop(context); // Close modal
                   }
                 },
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ],
           ),

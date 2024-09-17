@@ -13,12 +13,14 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapState extends State<MapPage> {
-  final LatLng initialLocation = LatLng(27.7172, 85.3240); // Kathmandu
-  final LatLng destinationLocation = LatLng(27.6780, 85.3140); // Example destination
+  final LatLng initialLocation = const LatLng(27.7172, 85.3240); // Kathmandu
+  final LatLng destinationLocation =
+      const LatLng(27.6780, 85.3140); // Example destination
 
   List<LatLng> routePoints = []; // Stores points for the polyline
 
-  final String mapboxApiKey = 'pk.eyJ1IjoiYXBhbGF0IiwiYSI6ImNtMTFwNmNqdjBidmIyaXMxdHRiZTV2MWsifQ.ZxtsWxX-ICYTvpYxwdQrqA'; // Your Mapbox API key
+  final String mapboxApiKey =
+      'pk.eyJ1IjoiYXBhbGF0IiwiYSI6ImNtMTFwNmNqdjBidmIyaXMxdHRiZTV2MWsifQ.ZxtsWxX-ICYTvpYxwdQrqA'; // Your Mapbox API key
 
   @override
   void initState() {
@@ -36,7 +38,8 @@ class _MapState extends State<MapPage> {
         final data = json.decode(response.body);
 
         // Extract route geometry (the list of coordinates)
-        final List<dynamic> coordinates = data['routes'][0]['geometry']['coordinates'];
+        final List<dynamic> coordinates =
+            data['routes'][0]['geometry']['coordinates'];
 
         // Convert the coordinates into LatLng and store in routePoints
         setState(() {
@@ -67,7 +70,7 @@ class _MapState extends State<MapPage> {
         children: [
           TileLayer(
             urlTemplate:
-            'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=$mapboxApiKey',
+                'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=$mapboxApiKey',
             userAgentPackageName: 'com.example.app',
             maxNativeZoom: 19,
           ),
@@ -75,8 +78,8 @@ class _MapState extends State<MapPage> {
             attributions: [
               TextSourceAttribution(
                 'Mapbox',
-                onTap: () => launchUrl(
-                    Uri.parse('https://www.mapbox.com/about/maps/')),
+                onTap: () =>
+                    launchUrl(Uri.parse('https://www.mapbox.com/about/maps/')),
               ),
               TextSourceAttribution(
                 'OpenStreetMap contributors',

@@ -18,7 +18,7 @@ class CameraScreenState extends State<CameraScreen> {
   List<CameraDescription>? _cameras;
   bool _isCameraInitialized = false;
   String data = "Evaluating the scene";
-  Timer?  _timer;
+  Timer? _timer;
   final gemini = Gemini.instance;
   final FlutterTts flutterTts = FlutterTts();
 
@@ -40,7 +40,7 @@ class CameraScreenState extends State<CameraScreen> {
 
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-     _analyze();
+      _analyze();
     });
   }
 
@@ -80,7 +80,7 @@ class CameraScreenState extends State<CameraScreen> {
               text:
                   "You are guiding a blind person this is what the person sees. Formulate appropriate response. and navigate where to go next, make them aware of any pitfalls as well as dangers, keep the response extremely short in nepali language.",
               images: [file.readAsBytesSync()])
-          .then((value) => {_speak(value?.content?.parts?.last.text??' ')})
+          .then((value) => {_speak(value?.content?.parts?.last.text ?? ' ')})
           .catchError((e) => throw "Error");
     } catch (e) {
       setState(() {

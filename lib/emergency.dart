@@ -4,11 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'ui/model_sheet.dart';
 
 class EmergencyPage extends StatefulWidget {
+  const EmergencyPage({super.key});
+
   @override
-  _EmergencyPageState createState() => _EmergencyPageState();
+  EmergencyPageState createState() => EmergencyPageState();
 }
 
-class _EmergencyPageState extends State<EmergencyPage> {
+class EmergencyPageState extends State<EmergencyPage> {
   String phoneNumber = '';
 
   Future<void> _checkStoredPhoneNumber() async {
@@ -40,16 +42,16 @@ class _EmergencyPageState extends State<EmergencyPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Stored Emergency Contact:'),
-            SizedBox(height: 16),
+            const Text('Stored Emergency Contact:'),
+            const SizedBox(height: 16),
             Text(
               phoneNumber,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 50,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             ElevatedButton(
@@ -64,7 +66,7 @@ class _EmergencyPageState extends State<EmergencyPage> {
                 );
                 _checkStoredPhoneNumber();
               },
-              child: Text('Change'),
+              child: const Text('Change'),
             ),
           ],
         ),
